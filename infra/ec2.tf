@@ -20,7 +20,9 @@ resource "aws_security_group" "allow_http_ssh" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]    
+    # security_groups = aws_instance.db.security_groups
+    # to be modified by individuals
   }
 
   egress {
@@ -69,10 +71,13 @@ resource "aws_lb_listener" "front_end" {
 
 /* • an EC2 instance named “web” deployed into private_az1 (use the latest Amazon Linux 
 2 64-bit (x86) image and deploy a t2.micro instance size). */
+/* • The “web” instance should allow ingress on the appropriate application port and SSH 
+ingress on port 22 */
 resource "aws_instance" "web" {
-  ami           = var.ami_id
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.private_az1.id
+  ami             = var.ami_id
+  instance_type   = "t2.micro"
+  security_groups = [aws_security_group.allow_http_ssh.id]
+  subnet_id       = aws_subnet.private_az1.id
 
   tags = {
     Name = "web"
@@ -81,11 +86,13 @@ resource "aws_instance" "web" {
 
 /* • an EC2 instance named “db” deployed in the data_az1 (use the latest Amazon Linux 2 
 64-bit (x86) image and deploy a t2.micro instance size). */
+/* • The “db” instance should allow ingress on the appropriate database port and allow 
+SSH ingress on port 22 */
 resource "aws_instance" "db" {
-  ami           = "ami-0022f774911c1d690"
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.data_az1.id
-
+  ami             = "ami-0022f774911c1d690"
+  instance_type   = "t2.micro"
+  subnet_id       = aws_subnet.data_az1.id
+  security_groups = [aws_security_group.allow_http_ssh.id]
   tags = {
     Name = "db"
   }

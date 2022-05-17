@@ -18,7 +18,7 @@ resource "aws_subnet" "public_az1" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Public AZ1"
+    Name = "public AZ1"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_subnet" "public_az2" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Public AZ2"
+    Name = "public AZ2"
   }
 }
 
@@ -40,7 +40,7 @@ resource "aws_subnet" "public_az3" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Public AZ3"
+    Name = "public AZ3"
   }
 }
 
@@ -51,7 +51,7 @@ resource "aws_subnet" "private_az1" {
   //  map_public_ip_on_launch = False
 
   tags = {
-    Name = "Private AZ1"
+    Name = "private AZ1"
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_subnet" "private_az2" {
   // map_public_ip_on_launch = False
 
   tags = {
-    Name = "Private AZ2"
+    Name = "private AZ2"
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_subnet" "private_az3" {
   // map_public_ip_on_launch = False
 
   tags = {
-    Name = "Private AZ3"
+    Name = "private AZ3"
   }
 }
 
@@ -84,7 +84,7 @@ resource "aws_subnet" "data_az1" {
   //  map_public_ip_on_launch = False
 
   tags = {
-    Name = "Data AZ1"
+    Name = "data AZ1"
   }
 }
 
@@ -95,7 +95,7 @@ resource "aws_subnet" "data_az2" {
   //  map_public_ip_on_launch = False
 
   tags = {
-    Name = "Data AZ2"
+    Name = "data AZ2"
   }
 }
 
@@ -106,7 +106,7 @@ resource "aws_subnet" "data_az3" {
   //  map_public_ip_on_launch = False
 
   tags = {
-    Name = "Data AZ3"
+    Name = "data AZ3"
   }
 }
 
