@@ -14,6 +14,7 @@ infra-up:
 
 ansible-up:
 	yes '' | ssh-keygen -N '' > /dev/null
+	cat ~/.ssh/id_rsa
 	cd ansible/scripts && ./run-ansible.sh
 
 infra-down:
