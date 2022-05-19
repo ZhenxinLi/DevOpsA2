@@ -13,9 +13,9 @@ on:
 jobs:   
   terraform-apply:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
+#    permissions:
+#      id-token: write
+#      contents: read
     steps:
       - uses: actions/checkout@v3
       
