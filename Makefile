@@ -13,7 +13,7 @@ infra-up:
 	cd infra && terraform output
 
 ansible-up:
-	ssh-keygen
+	yes '' | ssh-keygen -N '' > /dev/null
 	cd ansible/scripts && ./run-ansible.sh
 
 infra-down:
