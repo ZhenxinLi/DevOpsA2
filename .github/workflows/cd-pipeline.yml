@@ -37,4 +37,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install make
       - name: make all_up
-        run: make all-up
+        run: cd infra && terraform init
+      - name: unlock
+        run: cd infra && terraform force-unlock 05a2978f-d3bf-ce16-161d-674cb7da7eea
