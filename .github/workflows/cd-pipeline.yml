@@ -19,3 +19,5 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install make
+      - name: make all_up
+        run: make all-up
