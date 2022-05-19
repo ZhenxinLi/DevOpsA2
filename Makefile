@@ -9,6 +9,7 @@ all-up:
 
 infra-up:
 	cd infra && terraform init
+	cd infra && terraform plan -lock=false
 	cd infra && terraform apply --auto-approve
 	cd infra && terraform output
 
