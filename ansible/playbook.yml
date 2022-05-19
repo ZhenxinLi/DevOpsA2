@@ -1,8 +1,62 @@
+- name: Deploy DB
+  hosts: db
+  tasks: 
+    - name: repo
+      copy:
+        content: |
+          [mongodb-org-4.2]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/4.4/x86_64/
+          gpgcheck=1
+          enabled=1
+          gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
+        dest: /etc/yum.repos.d/mogo.repo
+      become: yes
+    - name: install mogo.
+      shell: sudo yum install -y mongodb-org
+      become: yes
+    - name: config.
+      shell: sudo sed -i "s/bindIp\:\ 127.0.0.1/bindIpAll\:\ true/g" /etc/mongod.conf
+      become: yes
+    - name: start app
+      shell: sudo systemctl start mongod
+      become: yes
+
 - name: Deploy Application
-  hosts: all
+  hosts: web
+  vars:
+    app_path: "/www/application/src/"
+    db_url: "{{ db_url }}"
 
   tasks: 
-    - name: Create a file called '/tmp/testfile.txt' with the content 'hello world'.
+    - name: install nodejs.
+      shell: sudo curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+      become: yes
+    - name: install nodejs.
+      shell: sudo yum -y install nodejs npm
+      become: yes
+    - name: mkdir.
+      shell: sudo mkdir -p /www/application
+      become: yes
+    - name: copy files.
       copy:
-        content: hello world
-        dest: /tmp/testfile.txt
+        src: ../src
+        dest: /www/application
+      become: yes
+    - name: systemd
+      template:
+        src: templates/service.tpl
+        dest: /usr/lib/systemd/system/ToDoApp.service
+        mode: 0755
+        owner: root
+        group: root
+      become: yes
+    - name: npm install
+      shell: cd /www/application/src && sudo npm install
+      become: yes
+    - name: automatic start
+      shell: sudo systemctl enable ToDoApp
+      become: yes
+    - name: start app
+      shell: sudo systemctl start ToDoApp
+      become: yes

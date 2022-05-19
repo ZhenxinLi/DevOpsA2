@@ -3,7 +3,7 @@ resource "aws_key_pair" "deployer" {
   public_key = var.public_key
 }
 
-resource "aws_security_group" "allow_http_ssh" {
+resource "aws_security_group" "web_sg" {
   description = "Allow SSH and http inbound traffic"
   vpc_id      = aws_vpc.main.id
 
@@ -50,7 +50,6 @@ resource "aws_lb" "AT2-lb" {
   name               = "AT2-lb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.allow_http_ssh.id]
   subnets            = [aws_subnet.public_az1.id, aws_subnet.public_az2.id, aws_subnet.public_az3.id]
 
   tags = {
@@ -58,7 +57,7 @@ resource "aws_lb" "AT2-lb" {
   }
 }
 
-resource "aws_lb_listener" "front_end" {
+resource "aws_lb_listener" "web_front_end" {
   load_balancer_arn = aws_lb.AT2-lb.arn
   port              = "80"
   protocol          = "HTTP"
@@ -74,26 +73,39 @@ resource "aws_lb_listener" "front_end" {
 /* • The “web” instance should allow ingress on the appropriate application port and SSH 
 ingress on port 22 */
 resource "aws_instance" "web" {
-  ami             = var.ami_id
+  ami             = data.aws_ami.Linux.id
   instance_type   = "t2.micro"
-  security_groups = [aws_security_group.allow_http_ssh.id]
+  security_groups = [aws_security_group.web_sg.id]
   subnet_id       = aws_subnet.private_az1.id
+  associate_public_ip_address = true
+  key_name        = aws_key_pair.deployer.key_name
 
   tags = {
-    Name = "web"
+    Name = "Assignment 2 web"
   }
 }
 
-/* • an EC2 instance named “db” deployed in the data_az1 (use the latest Amazon Linux 2 
-64-bit (x86) image and deploy a t2.micro instance size). */
-/* • The “db” instance should allow ingress on the appropriate database port and allow 
-SSH ingress on port 22 */
-resource "aws_instance" "db" {
-  ami             = "ami-0022f774911c1d690"
-  instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.data_az1.id
-  security_groups = [aws_security_group.allow_http_ssh.id]
-  tags = {
-    Name = "db"
+data "aws_ami" "Linux" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-gp2"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
   }
 }

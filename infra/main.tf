@@ -11,7 +11,6 @@ terraform {
     region     = "us-east-1"
     dynamodb_endpoint = "https://dynamodb.us-east-1.amazonaws.com"
     dynamodb_table = "rmit-locktable-tb0nyr"
-
   }
 }
 
