@@ -1,6 +1,6 @@
 resource "aws_key_pair" "deployer" {
   key_name   = "rmit-assignment-2-key"
-  public_key = "~/.ssh/id_rsa.pub"
+  public_key = "id_rsa.pub "
 }
 
 resource "aws_security_group" "web_sg" {
