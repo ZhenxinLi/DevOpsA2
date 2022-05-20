@@ -20,8 +20,9 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: generate key pairs
-        run: 	 yes '' | ssh-keygen -N '' > /dev/null
-	             cat ~/.ssh/id_rsa
+        run: yes '' | ssh-keygen -N '' > /dev/null
+      - name: display key values
+        run: cat ~/.ssh/id_rsa
 
             
       - name: Configure AWS credentials 
