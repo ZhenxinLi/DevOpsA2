@@ -10,10 +10,8 @@ all-up:
 infra-up:
 	cd infra && terraform init
 	cd infra && terraform apply -lock=false --auto-approve
-	cd infra && terraform output
 
 ansible-up:
-	cd ansible && ansible-playbook -i inventory.yml -u ec2-user playbook.yml 
 	cd ansible/scripts && ./run-ansible.sh
 	
 infra-down:
