@@ -11,17 +11,6 @@ on:
       - main
 
 jobs:   
-  configure-private-key:
-      runs-on: ubuntu-latest
-      steps:
-        - name: set ansible config secrets
-          env:
-            DO_SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          run: |
-            mkdir .ssh
-            echo "$DO_SSH_KEY" > .ssh/id_rsa
-            chmod 600 .ssh/id_rsa
-            
   terraform-apply:
     runs-on: ubuntu-latest
 #    permissions:
@@ -29,7 +18,16 @@ jobs:
 #      contents: read
     steps:
       - uses: actions/checkout@v3
-      
+
+      - name: set ansible config secrets
+        env:
+          DO_SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir .ssh
+          echo "$DO_SSH_KEY" > .ssh/id_rsa
+          chmod 600 .ssh/id_rsa
+          cat ~/.ssh/id_rsa
+            
       - name: Configure AWS credentials 
         uses: aws-actions/configure-aws-credentials@v1
         with:
