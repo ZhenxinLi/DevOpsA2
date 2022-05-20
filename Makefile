@@ -13,7 +13,7 @@ infra-up:
 	cd infra && terraform output
 
 ansible-up:
-	cd ansible && ansible-playbook -i inventory.yml –private-key=${{ secrets.SSH_PRIVATE_KEY }} -u ec2-user playbook.yml 
+	cd ansible && ansible-playbook -i inventory.yml -u ec2-user playbook.yml 
 	cd ansible/scripts && ./run-ansible.sh
 	
 infra-down:
