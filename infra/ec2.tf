@@ -1,6 +1,6 @@
 resource "aws_key_pair" "deployer" {
   key_name   = "rmit-assignment-2-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFy3KGcK8l96Dkdt0FIJ3UCgnthZoJJA7qmxtGWkRqUMQl6GWL4GC6+viA7MBpXwFG3Yp94W5iKniDtitugMJ5tBIk7BoP9jqyD1F+F0HFSViB2RMAstLQxl3XWa0Tzpwy7F2TKvzafxG0Ejt6T6e66xSTn/5v0fCnCOatzjZOuotnXEAIHb3s080gzOCSo1d3kXfBO11EyljlP99VaC7fO8SrQlId1PSCnUSnH73WhLjZVmd5dlG2jWl7E1Z2begTE84x/96GLxOyNSgK4uHZYuRPWDzSVJLDx8FtHvzOYD2DiST/uH0gK03mF15IG/u6I9ofAasGxBpaUmPbCzaSL+LWLQS+clRe/7sB4k8w8HtYiFSVXbU4np4YznHcV/+lbkYxbenc01wPI3RnB1PtAw0uqZtHaoYyyio3oCkuPmqnzNHtX+AVE++nhgUQmZ5m8ol6bdG/qy9S0/b7YiXjGU9mQnae81KTxKFTtYpC+9CvGI+yzY/PmKWuqIV6Abc= jk@LAPTOP-0JLP6FRS"
+  public_key = "~/.ssh/id_rsa.pub"
 }
 
 resource "aws_security_group" "web_sg" {
