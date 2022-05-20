@@ -25,6 +25,7 @@ jobs:
           
           
   terraform-apply:
+    needs: setting-credentials
     runs-on: ubuntu-latest
 #    permissions:
 #      id-token: write
