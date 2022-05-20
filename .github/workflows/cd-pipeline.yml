@@ -10,26 +10,9 @@ on:
     branches:
       - main
 
-jobs: 
-  setting-credentials:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Configure AWS credentials 
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: us-east-1
-          
-          
+jobs:        
   terraform-apply:
-    needs: setting-credentials
     runs-on: ubuntu-latest
-#    permissions:
-#      id-token: write
-#      contents: read
     steps:
       - uses: actions/checkout@v3
       
@@ -38,15 +21,18 @@ jobs:
       - name: display key values
         run: cat ~/.ssh/id_rsa
 
-          #role-to-assume: arn:aws:iam::3198886108915:role/my-github-actions-role-test
-
-        #   role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
-        #  role-duration-seconds: 1200
-          #role-session-name: AssetsUploadSession
+      - name: setting-AWS-credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
           
       - name: install make
         run: |
           sudo apt-get update
           sudo apt-get install make
-      - name: make all_up
+          
+      - name: make all-up
         run: make all-up
