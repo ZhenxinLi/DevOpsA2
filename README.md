@@ -76,7 +76,23 @@
   
 ![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/S32.jpg?raw=true)  
 
+
+* Configure the github action secrets  
   
+  Configure the github action secrets by updating the new credential details. Copy and paste the values for `aws_access_key_id` , `aws_secret_access_key` and `aws_session_token` into the corresponding secrets  
+  
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/githubSecrets.jpg?raw=true)  
+
+* Wait for the CD pipeline to work, and finally get the deployed application.  
+
+  The deployed application should show up by clicking the `Assignment 2 web` EC2 instance in the user's aws account.  
+  
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/ec2.jpg?raw=true)  
+  
+  Note that by simply clicking the hyperlink will redirect the user to a `https` site, modify it to `http` so that the application shall show up.  
+  
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/Application.jpg?raw=true)    
+
 ## 3. Elements Break down  
  
 #### make all-up  
