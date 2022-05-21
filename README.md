@@ -3,7 +3,7 @@
 - Full Name: Zhenxin Li
 - Student ID: s3726514
 
-## 1. Abstract
+## 1. Assessment of the problem
   The Alpine Inc. has been very exited about the previous CI-pipeline we've made for them, hence they have decided hiring us for their another release, which is the Continuous Deployment.  
   
   Sor far, the Alpine Inc. has been relying on manual deployements, which is prone to human error as well as adding a lot of unnecessary human workloads.   
@@ -16,7 +16,11 @@
 #### - Github Actions
 #### - Terraform
 #### - Ansible
-#### - AWS
+#### - AWS  
+  
+  A successfully deployed application should look like the following image:  
+  
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/Application.jpg?raw=true)  
 
 ## 2. How to use
   The terraform files has configured an S3 bucket and DynamoDB table for use. The success state of our CD pipeline relies on a successfully configured S3 backend.  
@@ -73,4 +77,18 @@
 ![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/S32.jpg?raw=true)  
 
   
-## 3. Elements breakdowns
+## 3. Elements Break down  
+ 
+#### make all-up  
+  
+  The make all-up command is configured in the Makefile under the root repository. By running make up in the terminal it automatically runs a list of terminal commands.
+   
+    | cd infra && terraform init
+  
+  This command switches the working directory to the infra folder, and further runs the terraform init command, initializing terraform for its following usage.
+  
+    | cd infra && terraform apply -lock=false --auto-approve   
+
+  This command tells terrform to pick up the .tf files and automatically configure the corresponding entities in our aws. From our infra folder, the vpc.tf sets the parameters for VPC, subnets, Internet gateway and route table. The main.tf sets for AWS source, region, as well as the S3 backend. ec2.tf configures our deployer keys, security group for the application,   
+  
+     | cd ansible/scripts && ./run-ansible.sh
