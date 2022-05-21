@@ -3,20 +3,6 @@
 - Full Name: Zhenxin Li
 - Student ID: s3726514
 
-### Guidance (remove this section before final submission)
-
-1. Refer for assignment specification `Marking Guide` for details of what should appear in this README.
-
-1. Read `TERRAFORM.md` for instructions on running the make commands (install GNU Make 3.81 if you don't have it)
-
-1. If you do not see an `Actions` tab in your GitHub, email ashley.mallia@rmit.edu.au with URL to your repository, so that it can be enabled.
-
-1. Commit images to the `img` directory and add them like 
-    ```html
-    <img src="img/md.png" style="height: 70px;"/>
-    ```
-   <img src="img/md.png" style="height: 70px;"/>
-
 ## 1. Abstract
   The Alpine Inc. has been very exited about the previous CI-pipeline we've made for them, hence they have decided hiring us for their another release, which is the Continuous Deployment.  
   
@@ -37,10 +23,42 @@
  
   To initiallize the S3 backend, the user needs to first  
 
-* Install terraform,
+* Install terraform, make and AWS cli,
+  After installing, run `terraform --version` in your terminal to check for your version. Versions above 1.1.9 are supported in our build.  
+  Other tools can be checked using the same way, terminal commands and outputs shold look like the following:  
+      
+      | make --version   
+      |    GNU Make 3.81   
+      | terraform --version  
+      |    Terraform v1.1.9  
+      | aws --version  
+      |    aws-cli/2.7.0 Python/3.9.12 Darwin/21.4.0 source/x86_64 prompt/off  
+  
 * Clone the repo into their local machine, 
-* Configure the AWS credential files in their ~/.aws/
-* Move to the root directory of this repo in terminals
-* Run 'make bootstrap' in their terminals
-    
+* Configure the AWS credential files in their ~/.aws/credentials
+  The path should look like this:  
+  
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/awsCredentials.png?raw=true)  
+
+  Open the credential files with notepad or other compatible IDEs(Visual studio code etc.), then copy the credential details from AWS and paste into the local .aws/credentials file, overwrite it and save the file.  
+  
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/awsCredentials2.jpg?raw=true)
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/awsCredentials3.jpg?raw=true)
+  
+  Keep in mind that your session will expire every 4 hours, after which you will need to again update your credentials file.
+  
+* Move to the root directory of the cloned repo in terminals
+* Run `make bootstrap` in the terminals  
+  Your terminal output should end with phrases looking like this:  
+  
+      | dynamoDB_lock_table_name = "rmit-locktable-******"
+      | state_bucket_name = "rmit-locktable-******"
+      
+* Copy the output from the previous command, and overwrite them into /infra/main.tf  
+
+  In my case my `make bootstrap`output was `dynamoDB_lock_table_name = "rmit-locktable-tb0nyr"`, replace them into at the corresponding position.   
+  
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/S32.jpg?raw=true)  
+
+  
 ## 3. Elements breakdowns
