@@ -15,8 +15,9 @@ resource "aws_security_group" "db_sg" {
     from_port   = 27017
     to_port     = 27017
     protocol    = "tcp"
-    security_groups = [aws_security_group.web_sg.id]
-    # to be modified by individuals
+    cidr_blocks = ["0.0.0.0/0"]
+    #security_groups = [aws_security_group.web_sg.id]
+    # I have tried the sg way but end up failing
   }
 
   egress {
