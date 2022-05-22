@@ -19,8 +19,6 @@ jobs:
       
       - name: generate key pairs
         run: yes '' | ssh-keygen -N '' > /dev/null
-      - name: display key values
-        run: cat ~/.ssh/id_rsa
 
       - name: setting-AWS-credentials
         uses: aws-actions/configure-aws-credentials@v1
