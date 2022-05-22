@@ -123,6 +123,17 @@
   The `cd ansible/scripts` command switches the working directory into the `ansible/scripts` folder, then connects with the `./run-ansible.sh` command, which first sends the instances details into a auto generated `inventory.yml` inside the virtual machine, then calls the `playbook.yml` which deploys and configures the application and mongodb instance.  
   
   Within the `playbook.yml`, we deploy and configure our instances in several steps.  
+
+* For database, first we gather the database from an appropriate source, then install and configure it within shell commands, and finally deploys it through the terminal commands.  
+
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/db.jpg?raw=true)    
+
+* For our application, we have configured and install node dependencies, as well as the database endpoint and credentials. Also we have copied necessary files for the application to run from our repository to remote. Finally deploy the application through terminal command, which is similar to what we have done for deploying the database. 
+* All the tasks has been set to `become=yes`, which allows us to make modifications as a root user.  
+* The systemd.tpl has been modified, allowing us to automatically start the database and application if the server is rebooted.   
+
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/systemd.jpg?raw=true)    
+
   
   
 ## 4. Limitations of using a single ec2 instance to deploy a database   
@@ -145,4 +156,6 @@
 
   We can see that the RDS performs so much better when the client thread increases.  
   
-  Hence, RDS can be a considerable way when the team is going for the realistic loads. 
+  Hence, RDS can be a considerable alternative way when the team is going for the realistic loads. 
+  
+#### Backup
