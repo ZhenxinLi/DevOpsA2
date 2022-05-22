@@ -8,12 +8,12 @@ all-up:
 	make ansible-up
 
 infra-up:
-	cd infra && terraform apply --auto-approve
-	cd infra && terraform output
+	cd infra && terraform init
+	cd infra && terraform apply -lock=false --auto-approve
 
 ansible-up:
 	cd ansible/scripts && ./run-ansible.sh
-
+	
 infra-down:
 	cd infra && terraform destroy --auto-approve --force
 
