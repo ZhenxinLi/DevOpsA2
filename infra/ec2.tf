@@ -16,6 +16,16 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
+    description = "http from internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]    
+    # security_groups = aws_instance.db.security_groups
+    # to be modified by individuals
+  }
+
+  ingress {
     description = "appropriate application port"
     from_port   = 3000
     to_port     = 3000
