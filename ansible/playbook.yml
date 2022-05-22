@@ -49,7 +49,7 @@
         cd src && npm pack
         mkdir -p ansible/files
       args:
-        chdir: /var/www
+        chdir: /www/application
       become: yes
     - name: systemd
       template:
