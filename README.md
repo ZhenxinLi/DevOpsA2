@@ -52,7 +52,7 @@
   
 ![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/awsCredentials.png?raw=true)  
 
-  If the path doesn't exist on the local machine, the user can manually create the path, as well as the config and credentials files.  
+  If the path doesn't exist on their local machine, the user can manually create the path, as well as the config and credentials files.  
   
   Open the credential files with notepad or other compatible IDEs(Visual studio code etc.), then copy the credential details from AWS and paste into the local .aws/credentials file, overwrite it and save the file.  
   
@@ -61,9 +61,7 @@
   
   Keep in mind that your session will expire every 4 hours, after which you will need to again update your credentials file.
   
-* Configure the AWS config file, 
-
-  Configure the .aws/config file with the following codes:  
+* Configure the AWS config file with the following codes:  
   
        [default] 
        region = us-east-1 
@@ -115,9 +113,36 @@
   This command tells terrform to pick up the .tf files and automatically configure the corresponding entities in our aws.  
   
 * Inside our infra folder, the `vpc.tf` sets the VPC with CIDR block 10.0.0.0/16, 9 subnets with size /22 with 3 layers (named public, private, and data) across 3 availability zones, an Internet gateway connected to the vpc and a default route table which routes 0.0.0.0/0 to the internet gateway.
-* The `ec2.tf` configures our deployer keys, which we have managed to automate generate and deploy in our pipeline. If the user wants make modifications locally, the code for deploy key should be relatively modified. We have also configured the EC2 instance for the application in `ec2.tf`, as well as its security group for the application. Finally, we have configured a public load balancer deployed in the public layer (all AZs), with a listener and target group. Note that we have automated the AMI selection for the instance, so that the EC2 instance would always use the latest Amazon Linux 2 64-bit (x86) AMI.   
+* The `ec2.tf` configures our deployer keys, which we have managed to automate generate and deploy in our pipeline's virtual machine. If the user wants make modifications locally, the code for deploy key should be relatively modified. We have also configured the EC2 instance for the application in `ec2.tf`, as well as its security group for the application. Finally, we have configured a public load balancer deployed in the public layer (all AZs), with a listener and target group. Note that we have automated the AMI selection for the instance, so that the EC2 instance would always use the latest Amazon Linux 2 64-bit (x86) AMI.   
 * The `db.tf` configures our db instance, and its corresponding security group. The db instance also uses automatic filter for the latest Amazon Linux 2 AMI.  
-* 
+* `main.tf` stores our providers details, as well as the configuration of our S3 backend and region information.
 * The `output.tf` reads and inputs the details for our generated instances. 
   
-     | cd ansible/scripts && ./run-ansible.sh
+      cd ansible/scripts && ./run-ansible.sh   
+      
+  The `cd ansible/scripts` command switches the working directory into the `ansible/scripts` folder, then connects with the `./run-ansible.sh` command, which first sends the instances details into a auto generated `inventory.yml` inside the virtual machine, then calls the `playbook.yml` which deploys and configures the application and mongodb instance.  
+  
+  Within the `playbook.yml`, we deploy and configure our instances in several steps.  
+  
+  
+## 4. Limitations of using a single ec2 instance to deploy a database   
+  
+  With EC2, you can install any database engine and version you want, using a single EC2 instance to deploy a database is mostly suitable for a cost-effective and light traffic application.  
+  
+  However, when the client threads demanding to scale, which is a common case in real world, then a single EC2 instance database may not be sufficient.  
+  
+#### Client threads scaling
+  
+  According to an [benchmark experiment article](https://blog.observu.com/2011/05/rds-vs-mysql-on-ec2-benchmark/), the author has tested the performance on MySQL on the EC2 instance, with the standard and optimized versions, compared with the RDS performance:  
+  
+![cr: Michiel van Vlaardingen, 2011](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/ec21.jpg?raw=true)  
+
+  We can see that for the first test, when it encounters small client threads the performance is quite similar.  
+  
+  However, with the client threads increasing to 50:  
+  
+![cr: Michiel van Vlaardingen, 2011](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/ec22.jpg?raw=true)  
+
+  We can see that the RDS performs so much better when the client thread increases.  
+  
+  Hence, RDS can be a considerable way when the team is going for the realistic loads. 
