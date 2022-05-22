@@ -38,7 +38,7 @@ resource "aws_security_group" "db_sg" {
 SSH ingress on port 22 */
 resource "aws_instance" "db" {
   # ami = data.aws_ami.ubuntu.id
-  ami             = data.aws_ami.Linux.id
+  ami             = "ami-0022f774911c1d690"
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.data_az1.id
   security_groups = [aws_security_group.db_sg.id]
