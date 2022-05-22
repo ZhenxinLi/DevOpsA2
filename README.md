@@ -104,11 +104,11 @@
   
   The make all-up command is configured in the Makefile under the root repository. By running make all-up in the terminal it automatically runs a list of terminal commands.
    
-    | cd infra && terraform init
+     cd infra && terraform init
   
   This `cd infra` command switches the working directory to the infra folder, then the `&&` connects with the second command `terraformm init` which initializes terraform for its following usage.
   
-    | cd infra && terraform apply -lock=false --auto-approve   
+     cd infra && terraform apply -lock=false --auto-approve   
 
   This command tells terrform to pick up the .tf files and automatically configure the corresponding entities in our aws.  
   
@@ -140,9 +140,9 @@
   
   With EC2, you can install any database engine and version you want, using a single EC2 instance to deploy a database is mostly suitable for a cost-effective and light traffic application.  
   
-  However, when the client threads demanding to scale, which is a common case in real world, then a single EC2 instance database may not be sufficient.  
+  However, when the client threads demanding to scale, which is a common case in real world, then a single EC2 instance database might not be sufficient.  
   
-#### Client threads scaling
+### Client threads scaling
   
   According to an [benchmark experiment article](https://blog.observu.com/2011/05/rds-vs-mysql-on-ec2-benchmark/), the author has tested the performance on MySQL on the EC2 instance, with the standard and optimized versions, compared with the RDS performance:  
   
@@ -150,7 +150,7 @@
 
   We can see that for the first test, when it encounters small client threads the performance is quite similar.  
   
-  However, with the client threads increasing to 50:  
+  However, as the client threads increasing to 50:  
   
 ![cr: Michiel van Vlaardingen, 2011](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/ec22.jpg?raw=true)  
 
@@ -158,16 +158,17 @@
   
   Hence, RDS can be a considerable alternative way when the team is going for the realistic loads. 
   
-#### Security  
+### Cost
 
-  Under the context of running database using a single EC2 instance, webserver may need to be available for Public internet access and taking untrusted input from anonymous users.
+  The databases related to the application can only share a database instance due to performance concerns, but a dedicated database instance can serve multiple applications efficiently.  
+  
+  If the user is bothered by this limitation, the user can consider [DynamoDB](https://stackoverflow.com/questions/25019380/multiple-applications-and-dynamodb-ideal-way-to-configure) as an alternative way.
 
-  In that case, if web server gets compromised then there might be high chances that attacker can get root access on database server too.
-
-#### More limitations...  
+### More limitations...  
 
   There are more limitations on setting database using a single ec2 instance. Such as  
 * If the user wants a high availability, the user has to configure the database server in a highly available cluster himself/herself.
 * Backups have to be manually enabled by user.
-* The user has to pick the right storage volume to get the IOPS and latency needed for the best performance.
+* The user has to pick the right storage volume to get the IOPS and latency needed for the best performance.  
+
 ...
