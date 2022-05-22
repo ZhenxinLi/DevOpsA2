@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - main
-      - feature/**
+      - feature
   pull_request:
     branches:
       - main
 
 jobs:        
   terraform-apply:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
