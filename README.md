@@ -17,7 +17,13 @@
 #### - Terraform
 #### - Ansible
 #### - AWS  
+
+## 2. Solution AWS Structure  
+
+  According to the client's requirements, the purposed solution AWS structure would be configured like the following image:  
   
+![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/awsDiagram.jpg?raw=true)  
+
   A successfully deployed application should look like the following image:  
   
 ![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/Application.jpg?raw=true)  
@@ -46,7 +52,8 @@
   
 ![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/awsCredentials.png?raw=true)  
 
-  If the path doesn't exist, you can manually create the path, as well as the config and credentials files.
+  If the path doesn't exist on the local machine, the user can manually create the path, as well as the config and credentials files.  
+  
   Open the credential files with notepad or other compatible IDEs(Visual studio code etc.), then copy the credential details from AWS and paste into the local .aws/credentials file, overwrite it and save the file.  
   
 ![alt text](https://github.com/rmit-computing-technologies/cosc2759-assignment-2-ZhenxinLi/blob/feature/img/awsCredentials2.jpg?raw=true)
@@ -97,14 +104,20 @@
  
 #### make all-up  
   
-  The make all-up command is configured in the Makefile under the root repository. By running make up in the terminal it automatically runs a list of terminal commands.
+  The make all-up command is configured in the Makefile under the root repository. By running make all-up in the terminal it automatically runs a list of terminal commands.
    
     | cd infra && terraform init
   
-  This command switches the working directory to the infra folder, and further runs the terraform init command, initializing terraform for its following usage.
+  This `cd infra` command switches the working directory to the infra folder, then the `&&` connects with the second command `terraformm init` which initializes terraform for its following usage.
   
     | cd infra && terraform apply -lock=false --auto-approve   
 
-  This command tells terrform to pick up the .tf files and automatically configure the corresponding entities in our aws. From our infra folder, the vpc.tf sets the parameters for VPC, subnets, Internet gateway and route table. The main.tf sets for AWS source, region, as well as the S3 backend. ec2.tf configures our deployer keys, security group for the application,   
+  This command tells terrform to pick up the .tf files and automatically configure the corresponding entities in our aws.  
+  
+* Inside our infra folder, the `vpc.tf` sets the VPC with CIDR block 10.0.0.0/16, 9 subnets with size /22 with 3 layers (named public, private, and data) across 3 availability zones, an Internet gateway connected to the vpc and a default route table which routes 0.0.0.0/0 to the internet gateway.
+* The `ec2.tf` configures our deployer keys, which we have managed to automate generate and deploy in our pipeline. If the user wants make modifications locally, the code for deploy key should be relatively modified. We have also configured the EC2 instance for the application in `ec2.tf`, as well as its security group for the application. Finally, we have configured a public load balancer deployed in the public layer (all AZs), with a listener and target group. Note that we have automated the AMI selection for the instance, so that the EC2 instance would always use the latest Amazon Linux 2 64-bit (x86) AMI.   
+* The `db.tf` configures our db instance, and its corresponding security group. The db instance also uses automatic filter for the latest Amazon Linux 2 AMI.  
+* 
+* The `output.tf` reads and inputs the details for our generated instances. 
   
      | cd ansible/scripts && ./run-ansible.sh
