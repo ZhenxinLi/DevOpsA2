@@ -158,4 +158,16 @@
   
   Hence, RDS can be a considerable alternative way when the team is going for the realistic loads. 
   
-#### Backup
+#### Security  
+
+  Under the context of running database using a single EC2 instance, webserver may need to be available for Public internet access and taking untrusted input from anonymous users.
+
+  In that case, if web server gets compromised then there might be high chances that attacker can get root access on database server too.
+
+#### More limitations...  
+
+  There are more limitations on setting database using a single ec2 instance. Such as  
+* If the user wants a high availability, the user has to configure the database server in a highly available cluster himself/herself.
+* Backups have to be manually enabled by user.
+* The user has to pick the right storage volume to get the IOPS and latency needed for the best performance.
+...
