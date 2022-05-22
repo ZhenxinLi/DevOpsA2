@@ -43,6 +43,14 @@
         src: ../src
         dest: /www/application
       become: yes
+    - name: get artefact
+      shell: |
+        source ~/.bashrc
+        cd src && npm pack
+        mkdir -p ansible/files
+      args:
+        chdir: /var/www
+      become: yes
     - name: systemd
       template:
         src: templates/service.tpl
